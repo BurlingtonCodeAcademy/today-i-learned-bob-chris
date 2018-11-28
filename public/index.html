@@ -1,10 +1,44 @@
-<h1>Today I Learned</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Today I Learned</title>
+</head>
+<body>
+  <a href='/facts'>List all entries (JSON)</a>
+  <form method='POST' action='/facts'>
+    <input type='text' name='title'>
+    <input type='text' name='text'>
+    <input type='submit'>
+  </form>
+  <div id='recentEntries'></div>
 
-<li><a href='/facts'>List all entries (JSON)</a></li>
+  <form method='POST' action='/comment'>
+    <input type="text" name='title'>
+    <input type="text" name="comment">
+    <input type="submit">
+  </form>
+  <script src="til_web.js">
 
-<h2>Add a fact</h2>
+    //this doesn't work, can't get it to run
+    async function showEntries(){
+      const display = document.getElementById('recentEntries');
+      console.log(display)
+      //call getWeek() then format the response,
+      thisWeek = await getWeek();
+      console.log(thisWeek)
+      //thisWeek.forEach(create list item? with title, time, and text)
+        //display.innerHTML += item
+      thisWeek.forEach(item => {
+        console.log(item)
+        display.innerHTML += <div>{item.when} {item.title}: {item.text}</div>
+      });
+    };
+    
+  </script>
+</body>
+</html>
 
-<form method='POST' action='/facts'>
-  <input type='text' name='text'>
-  <input type='submit'>
-</form>
+

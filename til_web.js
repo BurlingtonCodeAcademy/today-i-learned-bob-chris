@@ -13,7 +13,42 @@ app.use(express.urlencoded({extended: true})) // all POST bodies are expected to
 const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const store = new FactStore(dbUrl);
 
+app.get('/pastweek', getWeek)
+
 app.get('/facts', getAll);
+
+async function showEntries(){
+  const display = document.getElementById('recentEntries');
+  console.log(display)
+  //call getWeek() then format the response,
+  thisWeek = await getWeek();
+  console.log(thisWeek)
+  //thisWeek.forEach(create list item? with title, time, and text)
+    //display.innerHTML += item
+  thisWeek.forEach(item => {
+    console.log(item)
+    display.innerHTML += '<div>{item.when} {item.title}: {item.text}</div>'
+  });
+};
+
+app.get('/week', (request, response) => {
+  showEntries();
+  //this isn't the right way to get to the index file
+  response.send(public/index.html)
+})
+
+async function getWeek(request, response) {
+  let cursor = await store.thisWeek();
+  let output = [];
+  cursor.forEach((entry) => {
+    output.push(entry);
+  }, function (err) {
+    assert.equal(null, err);
+    console.log("Sending " + output.length + " records to client");
+    response.type('application/json')
+      .send(JSON.stringify(output))
+  });
+}
 
 async function getAll(request, response) {
   let cursor = await store.all();
@@ -30,8 +65,18 @@ async function getAll(request, response) {
 
 app.post('/facts', addFact);
 
+app.post('/comment', addComment);
+
+async function addComment(request, response) {
+  let result = await store.commment(request.body.title/*this will be reaplaced by the title of the post that you're on, eventually*/, request.body.name.trim(), request.body.text.trim())
+  let output = {
+    status: 'ok',
+    id: result.id
+  }
+}
+
 async function addFact(request, response) {
-  let result = await store.addFact(request.body.text.trim())
+  let result = await store.addEntry(request.body.title.trim(), request.body.text.trim())
   let output = {
     status: 'ok',
     id: result.id
