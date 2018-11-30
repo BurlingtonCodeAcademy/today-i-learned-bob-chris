@@ -68,11 +68,12 @@ app.post('/facts', addFact);
 app.post('/comment', addComment);
 
 async function addComment(request, response) {
-  let result = await store.commment(request.body.title/*this will be reaplaced by the title of the post that you're on, eventually*/, request.body.name.trim(), request.body.text.trim())
+  let result = await store.comment(request.body.title/*this will be reaplaced by the ID of the post that you're on, eventually*/, request.body.name.trim(), request.body.comment.trim())
   let output = {
-    status: 'ok',
-    id: result.id
+    status: 'ok'
   }
+  console.log("result: " + result)
+  response.type('application/json').send(JSON.stringify(output))
 }
 
 async function addFact(request, response) {
