@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="style.css">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +8,30 @@
   <title>Today I Learned</title>
 </head>
 <body>
-  <a href='/facts'>List all entries (JSON)</a>
+<div id="page-container">
+<h1>Today I Learned</h1>
+
+<a id='entries-link' href='/facts'>List all entries (JSON)</a>
+<br>
+<div id= 'inputForm'>
   <form id='inputEntry'method='POST' action='/facts'>
-    <input type='text' name='title'>
-    <input type='text' name='text'>
+    <input class="textInput" style="height: 25px" type='text' name='title' placeholder="title">
+    <input class="textInput" type='text' name='text' placeholder="text">
     <input type='submit'>
   </form>
-  <div id='recentEntries'></div>
-
+</div>
+<br>
+<div id='recentEntries'></div>
+<br>
   <form method='POST' action='/comment'>
     <input type="text" name='title' placeholder="title">
     <input type="text" name="name" placeholder="name">
     <input type="text" name="comment" placeholder="comment">
     <input type="submit">
   </form>
+</div>
   <script src="til_web.js">
+
 
     //this doesn't work, can't get it to run
     async function showEntries(){

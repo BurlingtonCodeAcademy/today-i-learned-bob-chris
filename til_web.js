@@ -17,7 +17,7 @@ app.get('/pastweek', getWeek)
 
 app.get('/facts', getAll);
 
-async function showEntries(){
+/*async function showEntries(){
   const display = document.getElementById('recentEntries');
   console.log(display)
   //call getWeek() then format the response,
@@ -29,7 +29,7 @@ async function showEntries(){
     console.log(item)
     display.innerHTML += '<div>{item.when} {item.title}: {item.text}</div>'
   });
-};
+};*/
 
 app.get('/week', (request, response) => {
   showEntries();
@@ -41,11 +41,13 @@ async function getWeek(request, response) {
   let cursor = await store.thisWeek();
   let output = [];
   cursor.forEach((entry) => {
-    output.push(entry);
+    //this is just a test for how to target elements when we shift to react, it works
+    let item = `<div>${entry.when}: <a href=${entry._id}>${entry.title}</a></div>`
+    output.push(item);
   }, function (err) {
     assert.equal(null, err);
     console.log("Sending " + output.length + " records to client");
-    response.type('application/json')
+    response.type('text/javascript')
       .send(JSON.stringify(output))
   });
 }
